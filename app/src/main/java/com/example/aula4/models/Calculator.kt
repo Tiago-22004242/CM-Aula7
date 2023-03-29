@@ -2,7 +2,7 @@ package com.example.aula4.models
 
 import net.objecthunter.exp4j.ExpressionBuilder
 
-class Calculator {
+object Calculator {
     var display : String = "0"
         private set
     private val _history = mutableListOf<Operation>(
@@ -22,8 +22,8 @@ class Calculator {
             display
         ).build()
         val resultado = expression.evaluate().toString()
+        _history.add(Operation(display,resultado))
         display = resultado
-        _history.add(Operation(expression.toString(),resultado))
     }
     fun backspace() {
         val expressao = display.length - 1

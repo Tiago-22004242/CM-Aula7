@@ -1,6 +1,8 @@
 package com.example.aula4
 
+import android.content.ContentValues.TAG
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +12,6 @@ import com.example.aula4.databinding.FragmentHistoryBinding
 import com.example.aula4.models.Calculator
 
 class HistoryFragment : Fragment() {
-    private val calculator = Calculator()
     private lateinit var binding: FragmentHistoryBinding
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,7 +28,7 @@ class HistoryFragment : Fragment() {
         super.onStart()
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Historico"
         val builder = StringBuilder()
-        val history = calculator.history
+        val history = Calculator.history
         history.forEach {builder.append("${it.expression}=${it.result}\n")}
         binding.tvHistory.text = builder.toString()
     }
