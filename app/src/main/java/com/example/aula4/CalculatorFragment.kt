@@ -29,105 +29,58 @@ class CalculatorFragment : Fragment() {
         return binding.root
     }
     val operacoes : MutableList<Operation> = mutableListOf()
-    val calculadora : Calculator = Calculator()
 
     fun adicionarDisplay() {
-        binding.textVisor.text = calculadora.display
+        binding.textVisor.text = Calculator.display
     }
     override fun onStart() {
         super.onStart()
+        adicionarDisplay()
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Calculadora"
-        binding.button1.setOnClickListener {
-            Log.i(TAG, "Click no botão 1")
-            calculadora.addSymbol("1")
-            adicionarDisplay()
-        }
-        binding.button2.setOnClickListener {
-            Log.i(TAG, "Click no botão 2")
-            calculadora.addSymbol("2")
-            adicionarDisplay()
-        }
-        binding.button3.setOnClickListener {
-            Log.i(TAG, "Click no botão 3")
-            calculadora.addSymbol("3")
-            adicionarDisplay()
-        }
-        binding.button4.setOnClickListener {
-            Log.i(TAG, "Click no botão 4")
-            calculadora.addSymbol("4")
-            adicionarDisplay()
-        }
-        binding.button5.setOnClickListener {
-            Log.i(TAG, "Click no botão 5")
-            calculadora.addSymbol("5")
-            adicionarDisplay()
-        }
-        binding.button6.setOnClickListener {
-            Log.i(TAG, "Click no botão 6")
-            calculadora.addSymbol("6")
-            adicionarDisplay()
-        }
-        binding.button7.setOnClickListener {
-            Log.i(TAG, "Click no botão 7")
-            calculadora.addSymbol("7")
-            adicionarDisplay()
-        }
-        binding.button8.setOnClickListener {
-            Log.i(TAG, "Click no botão 8")
-            calculadora.addSymbol("8")
-            adicionarDisplay()
-        }
-        binding.button9.setOnClickListener {
-            Log.i(TAG, "Click no botão 9")
-            calculadora.addSymbol("9")
-            adicionarDisplay()
-        }
-        binding.buttonSum.setOnClickListener{
-            Log.i(TAG, "Click no botão +")
-            calculadora.addSymbol("+")
-            adicionarDisplay()
-        }
-        binding.buttonSubtration.setOnClickListener{
-            Log.i(TAG, "Click no botão -")
-            calculadora.addSymbol("-")
-            adicionarDisplay()
-        }
-        binding.buttonMul.setOnClickListener{
-            Log.i(TAG, "Click no botão *")
-            calculadora.addSymbol("*")
-            adicionarDisplay()
-        }
-        binding.buttonDivision.setOnClickListener{
-            Log.i(TAG, "Click no botão /")
-            calculadora.addSymbol("/")
-            adicionarDisplay()
-        }
-        binding.buttonDot.setOnClickListener{
-            Log.i(TAG, "Click no botão .")
-            calculadora.addSymbol(".")
-            adicionarDisplay()
-        }
-        binding.buttonClear.setOnClickListener{
-            Log.i(TAG, "Click no botão clear")
-            calculadora.clear()
-            adicionarDisplay()
-        }
-        binding.buttonLast.setOnClickListener{
-            Log.i(TAG, "Click no botão last")
-            calculadora.last()
-            adicionarDisplay()
-        }
-        binding.buttonDelete1.setOnClickListener{
-            Log.i(TAG, "Click no botão del")
-            calculadora.backspace()
-            adicionarDisplay()
-        }
-        binding.buttonEquals.setOnClickListener{
-            Log.i(TAG, "Click no botão =")
-            calculadora.equals()
-            adicionarDisplay()
-            Log.i(TAG, "O resultado da expressão é ${binding.textVisor.text}")
-        }
+        binding.button1.setOnClickListener {onClickSymbol("1")}
+        binding.button2.setOnClickListener {onClickSymbol("2")}
+        binding.button3.setOnClickListener {onClickSymbol("3")}
+        binding.button4.setOnClickListener {onClickSymbol("4")}
+        binding.button5.setOnClickListener {onClickSymbol("5")}
+        binding.button6.setOnClickListener {onClickSymbol("6")}
+        binding.button7.setOnClickListener {onClickSymbol("7")}
+        binding.button8.setOnClickListener {onClickSymbol("8")}
+        binding.button9.setOnClickListener {onClickSymbol("9")}
+        binding.buttonSum.setOnClickListener{onClickSymbol("+")}
+        binding.buttonSubtration.setOnClickListener{onClickSymbol("-")}
+        binding.buttonMul.setOnClickListener{onClickSymbol("*")}
+        binding.buttonDivision.setOnClickListener{onClickSymbol("/")}
+        binding.buttonDot.setOnClickListener{onClickSymbol(".")}
+        binding.buttonClear.setOnClickListener{onClickClear()}
+        binding.buttonLast.setOnClickListener{onClickLast()}
+        binding.buttonDelete1.setOnClickListener{onClickDel()}
+        binding.buttonEquals.setOnClickListener{onClickEquals()}
+    }
+    private fun onClickSymbol(symbol : String) {
+        Log.i(TAG, "Click no botão $symbol")
+        Calculator.addSymbol(symbol)
+        adicionarDisplay()
+    }
+    private fun onClickClear() {
+        Log.i(TAG, "Click no botão clear")
+        Calculator.clear()
+        adicionarDisplay()
+    }
+    private fun onClickLast() {
+        Log.i(TAG, "Click no botão last")
+        Calculator.last()
+        adicionarDisplay()
+    }
+    private fun onClickDel() {
+        Log.i(TAG, "Click no botão del")
+        Calculator.backspace()
+        adicionarDisplay()
+    }
+    private fun onClickEquals() {
+        Log.i(TAG, "Click no botão =")
+        Calculator.equals()
+        adicionarDisplay()
+        Log.i(TAG, "O resultado da expressão é ${binding.textVisor.text}")
     }
 }
 
