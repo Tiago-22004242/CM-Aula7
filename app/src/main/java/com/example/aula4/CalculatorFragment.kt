@@ -2,19 +2,23 @@ package com.example.aula4
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.aula4.databinding.FragmentCalculatorBinding
 import com.example.aula4.models.Calculator
 import com.example.aula4.models.Operation
-import net.objecthunter.exp4j.ExpressionBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class CalculatorFragment : Fragment() {
-
+    private val adapter = HistoryAdapter(::onOperationClick)
     private lateinit var binding: FragmentCalculatorBinding
     private val TAG = MainActivity::class.java.simpleName
     override fun onCreateView(
@@ -35,6 +39,11 @@ class CalculatorFragment : Fragment() {
     }
     override fun onStart() {
         super.onStart()
+        Calculator.getHistory { history ->
+            CoroutineScope(Dispatchers.Main).launch {
+                adapter.updateItems(history)
+            }
+        }
         adicionarDisplay()
         (requireActivity() as AppCompatActivity).supportActionBar?.title = "Calculadora"
         binding.button1.setOnClickListener {onClickSymbol("1")}
@@ -55,6 +64,8 @@ class CalculatorFragment : Fragment() {
         binding.buttonLast.setOnClickListener{onClickLast()}
         binding.buttonDelete1.setOnClickListener{onClickDel()}
         binding.buttonEquals.setOnClickListener{onClickEquals()}
+        binding.rvHistory?.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvHistory?.adapter = adapter
     }
     private fun onClickSymbol(symbol : String) {
         Log.i(TAG, "Click no botão $symbol")
@@ -78,9 +89,21 @@ class CalculatorFragment : Fragment() {
     }
     private fun onClickEquals() {
         Log.i(TAG, "Click no botão =")
-        Calculator.equals()
+        Calculator.equals(){
+            Calculator.getHistory { history ->
+                CoroutineScope(Dispatchers.Main).launch {
+                    adapter.updateItems(history)
+                }
+            }
+        }
         adicionarDisplay()
         Log.i(TAG, "O resultado da expressão é ${binding.textVisor.text}")
+    }
+    private fun onOperationClick(operation: String) {
+        val toast = Toast.makeText(requireContext(), operation, Toast.LENGTH_SHORT)
+        toast.duration = Toast.LENGTH_LONG // set the duration to 2 seconds (2000 milliseconds)
+        toast.show()
+
     }
 }
 

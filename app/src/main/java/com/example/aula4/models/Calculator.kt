@@ -1,5 +1,8 @@
 package com.example.aula4.models
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.objecthunter.exp4j.ExpressionBuilder
 
 object Calculator {
@@ -8,8 +11,12 @@ object Calculator {
     private val _history = mutableListOf<Operation>(
         Operation("1+1", "2"), Operation("2+2", "4")
     )
-    val history get() = _history.toList()
-
+    fun getHistory(callback: (List<Operation>) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            Thread.sleep(3 * 1000)
+            callback(_history.toList())
+        }
+    }
     fun addSymbol(symbol: String) {
         if (display == "0") {
             display = symbol
@@ -17,13 +24,17 @@ object Calculator {
             display += symbol
         }
     }
-    fun equals() {
+    fun equals(addedToHistory: () -> Unit) {
         val expression = ExpressionBuilder(
             display
         ).build()
         val resultado = expression.evaluate().toString()
-        _history.add(Operation(display,resultado))
+        val expressao = display
         display = resultado
+        CoroutineScope(Dispatchers.IO).launch {
+            addToHistory(expressao,resultado)
+            addedToHistory()
+        }
     }
     fun backspace() {
         val expressao = display.length - 1
@@ -40,5 +51,9 @@ object Calculator {
     }
     fun clear() {
         display = "0"
+    }
+    suspend fun addToHistory(expressao: String, resultado: String) {
+        Thread.sleep(3 * 1000)
+        _history.add(Operation(expressao,resultado))
     }
 }

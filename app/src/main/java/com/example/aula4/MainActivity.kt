@@ -1,15 +1,17 @@
 package com.example.aula4
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.example.aula4.databinding.ActivityMainBinding
-
+private val TAG = MainActivity::class.java.simpleName
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.i(TAG, "o método onCreate foi invocado")
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -62,5 +64,9 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+    override fun onDestroy() {
+        Log.i(TAG, "o método onDestroy foi invocado")
+        super.onDestroy()
     }
 }
